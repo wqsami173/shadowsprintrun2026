@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BIB Collection</title>
+
+    <style>
+        /* =========================================================
+           BASE / RESET
+           ========================================================= */
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --orange: #ff7518;
+            --orange-light: #ff9d42;
+            --orange-dark: #d94f00;
+
+            --purple: #8b5cf6;
+            --purple-dark: #6d28d9;
+
+            --red: #ef4444;
+
+            --black: #080808;
+            --black-soft: #101010;
+            --black-card: #151515;
+            --black-input: #0d0d0d;
+
+            --border: rgba(255, 117, 24, 0.22);
+
+            --text: #f5f5f5;
+            --text-soft: #b7b7b7;
+            --text-muted: #777;
+
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 30px 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--text);
+
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(255, 117, 24, 0.12),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(139, 92, 246, 0.10),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #050505 0%,
+                    #0d0d0d 45%,
+                    #090909 100%
+                );
+
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+
+            background:
+                radial-gradient(
+                    circle at 50% -10%,
+                    rgba(255, 117, 24, 0.08),
+                    transparent 35%
+                );
+
+            z-index: -2;
+        }
+
+        body::after {
+            content: "☠";
+            position: fixed;
+
+            right: 3%;
+            bottom: 1%;
+
+            font-size: 160px;
+            color: rgba(255, 117, 24, 0.025);
+
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* =========================================================
+           LAYOUT / CARD
+           ========================================================= */
+
+        .card {
+            width: 100%;
+            max-width: 590px;
+
+            padding: 34px 30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(25, 25, 25, 0.98),
+                    rgba(12, 12, 12, 0.98)
+                );
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.75),
+                0 0 50px rgba(255, 117, 24, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 3px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--orange),
+                    var(--purple),
+                    var(--orange),
+                    transparent
+                );
+
+            box-shadow: 0 0 20px rgba(255, 117, 24, 0.7);
+        }
+
+        /* =========================================================
+           TYPOGRAPHY / HEADER
+           ========================================================= */
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #fff;
+
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+
+            margin-bottom: 9px;
+        }
+
+        .card-title::before {
+            content: "";
+
+            width: 8px;
+            height: 30px;
+
+            display: inline-block;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    var(--orange),
+                    var(--orange-dark)
+                );
+
+            border-radius: 20px;
+
+            box-shadow: 0 0 12px rgba(255, 117, 24, 0.6);
+        }
+
+        .card-title::after {
+            content: "🎃";
+            font-size: 25px;
+            margin-left: auto;
+        }
+
+        .card-subhead {
+            color: var(--text-soft);
+
+            font-size: 14px;
+            line-height: 1.6;
+
+            margin-bottom: 28px;
+            padding-left: 16px;
+
+            border-left: 2px solid var(--orange);
+        }
+
+        /* =========================================================
+           FORM
+           ========================================================= */
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #d2d2d2;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+
+            background: var(--black-input);
+
+            border: 1px solid #292929;
+            border-radius: var(--radius-sm);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .input-wrapper:hover {
+            border-color: rgba(255, 117, 24, 0.4);
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--orange);
+
+            box-shadow:
+                0 0 0 3px rgba(255, 117, 24, 0.12),
+                0 0 22px rgba(255, 117, 24, 0.08);
+        }
+
+        .input-icon {
+            width: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--orange);
+
+            font-style: normal;
+            font-size: 18px;
+        }
+
+        .input-field {
+            width: 100%;
+
+            padding: 14px 14px 14px 0;
+
+            background: transparent;
+            border: none;
+            outline: none;
+
+            color: #fff;
+
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .input-field::placeholder {
+            color: #555;
+        }
+
+        .input-field:focus::placeholder {
+            color: #444;
+        }
+
+        /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+        .btn {
+            width: 100%;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 14px 18px;
+
+            border: none;
+            border-radius: var(--radius-sm);
+
+            font-size: 14px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                filter 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            margin-top: 4px;
+            padding: 15px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--orange),
+                    var(--orange-dark)
+                );
+
+            color: #fff;
+
+            font-size: 15px;
+
+            box-shadow:
+                0 10px 30px rgba(255, 117, 24, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+
+            box-shadow:
+                0 14px 35px rgba(255, 117, 24, 0.3),
+                0 0 25px rgba(255, 117, 24, 0.12);
+        }
+
+        /* =========================================================
+           ERROR MESSAGE
+           ========================================================= */
+
+        .error-msg {
+            min-height: 20px;
+
+            margin-top: 7px;
+            padding-left: 3px;
+
+            color: #ff6b6b;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           IMAGE SECTION
+           ========================================================= */
+
+        .image-section {
+            margin-top: 24px;
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #161616,
+                    #0e0e0e
+                );
+
+            border: 1px solid rgba(255, 117, 24, 0.18);
+            border-radius: 18px;
+
+            display: none;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.025),
+                0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .image-section.is-active {
+            display: block;
+            animation: reveal 0.4s ease forwards;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 14px;
+        }
+
+        .image-title {
+            color: #f5f5f5;
+
+            font-size: 16px;
+            font-weight: 750;
+        }
+
+        .badge {
+            flex-shrink: 0;
+
+            padding: 5px 10px;
+
+            background: rgba(255, 117, 24, 0.1);
+            border: 1px solid rgba(255, 117, 24, 0.28);
+            border-radius: 999px;
+
+            color: var(--orange-light);
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+        }
+
+        .image-preview {
+            min-height: 200px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: #080808;
+            border: 1px dashed #333;
+            border-radius: var(--radius-sm);
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: auto;
+
+            max-height: 330px;
+
+            object-fit: contain;
+            display: block;
+
+            transition: transform 0.25s ease;
+        }
+
+        .image-preview img:hover {
+            transform: scale(1.015);
+        }
+
+        /* =========================================================
+           DOWNLOAD BUTTON
+           ========================================================= */
+
+        .download-btn {
+            width: 100%;
+
+            margin-top: 14px;
+            padding: 13px 18px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            border-radius: var(--radius-sm);
+
+            background: rgba(255, 117, 24, 0.1);
+            border: 1px solid rgba(255, 117, 24, 0.35);
+
+            color: var(--orange-light);
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                border-color 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background: rgba(255, 117, 24, 0.17);
+            border-color: var(--orange);
+
+            transform: translateY(-1px);
+        }
+
+        .download-btn .icon {
+            font-style: normal;
+            font-size: 17px;
+        }
+
+        /* =========================================================
+           LOCKED ACTIONS
+           ========================================================= */
+
+        .locked-actions {
+            margin-top: 25px;
+            padding-top: 22px;
+
+            border-top: 1px solid #252525;
+
+            position: relative;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+
+            padding: 30px 20px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            background: rgba(8, 8, 8, 0.9);
+
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+
+            border-radius: var(--radius-md);
+
+            z-index: 5;
+
+            transition:
+                opacity 0.3s ease,
+                visibility 0.3s ease;
+        }
+
+        .lock-overlay.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .lock-icon {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 12px;
+
+            background: rgba(255, 117, 24, 0.1);
+            border: 1px solid rgba(255, 117, 24, 0.25);
+            border-radius: 50%;
+
+            font-size: 24px;
+
+            box-shadow: 0 0 25px rgba(255, 117, 24, 0.1);
+        }
+
+        .lock-text {
+            max-width: 330px;
+
+            color: #999;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .lock-text .highlight {
+            color: var(--orange-light);
+            font-weight: 800;
+        }
+
+        /* =========================================================
+           SUBMISSION LINK
+           ========================================================= */
+
+        .submission-box {
+            margin-bottom: 18px;
+        }
+
+        .submission-link-btn {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: #101010;
+            border: 1px solid #292929;
+            border-radius: var(--radius-sm);
+
+            color: #ddd;
+
+            font-size: 14px;
+            font-weight: 650;
+
+            text-decoration: none;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .submission-link-btn:hover {
+            background: rgba(255, 117, 24, 0.06);
+            border-color: rgba(255, 117, 24, 0.45);
+
+            transform: translateY(-1px);
+        }
+
+        .link-icon {
+            margin-right: 8px;
+            color: var(--orange);
+
+            font-style: normal;
+        }
+
+        .arrow-icon {
+            color: #777;
+
+            font-style: normal;
+            font-size: 18px;
+
+            transition:
+                transform 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .submission-link-btn:hover .arrow-icon {
+            color: var(--orange);
+            transform: translateX(4px);
+        }
+
+        .note {
+            margin-top: 6px;
+
+            color: #666;
+
+            font-size: 11px;
+
+            text-align: right;
+        }
+
+        /* =========================================================
+           FACEBOOK COMMUNITY
+           ========================================================= */
+
+        .fb-community-box {
+            margin-bottom: 4px;
+        }
+
+        .fb-btn {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1877f2,
+                    #0d5fd5
+                );
+
+            border: none;
+            border-radius: var(--radius-sm);
+
+            color: #fff;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            box-shadow: 0 8px 22px rgba(24, 119, 242, 0.16);
+
+            transition:
+                transform 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .fb-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        .fb-icon {
+            width: 27px;
+            height: 27px;
+
+            margin-right: 8px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.18);
+            border-radius: 50%;
+
+            font-style: normal;
+            font-weight: 900;
+        }
+
+        .fb-btn .arrow-icon {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .fb-btn:hover .arrow-icon {
+            color: #fff;
+            transform: translateX(4px);
+        }
+
+        /* =========================================================
+           LOCKED STATE
+           ========================================================= */
+
+        .locked-actions.is-locked .submission-link-btn,
+        .locked-actions.is-locked .fb-btn {
+            pointer-events: none;
+
+            opacity: 0.35;
+
+            filter: grayscale(0.7);
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .footer-note {
+            margin-top: 18px;
+
+            color: #555;
+
+            font-size: 11px;
+            line-height: 1.5;
+
+            text-align: center;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 16px 10px;
+                align-items: flex-start;
+            }
+
+            .card {
+                margin-top: 10px;
+                padding: 27px 19px;
+
+                border-radius: var(--radius-lg);
+            }
+
+            .card-title {
+                font-size: 23px;
+            }
+
+            .card-title::after {
+                font-size: 21px;
+            }
+
+            .card-subhead {
+                font-size: 13px;
+            }
+
+            .image-section {
+                padding: 15px;
+            }
+
+            .image-title {
+                font-size: 14px;
+            }
+
+            .badge {
+                font-size: 10px;
+            }
+
+            .lock-overlay {
+                padding: 20px 14px;
+            }
+
+            .lock-text {
+                font-size: 12px;
+            }
+        }
+
+        /* =========================================================
+           REDUCED MOTION
+           ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+
+        <!-- HEADER -->
+        <h1 class="card-title">BIB Access</h1>
+
+        <p class="card-subhead">
+            Enter your BIB number to unlock your resources
+        </p>
+
+
+        <!-- NAME -->
+        <div class="field">
+
+            <label class="field-label" for="nameInput">Full Name</label>
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">👤</span>
+
+                <input
+                    type="text"
+                    id="nameInput"
+                    class="input-field"
+                    placeholder="e.g. Miraj Islam Sami"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- BIB -->
+        <div class="field">
+
+            <label class="field-label" for="bibInput">BIB Number</label>
+
+            <div class="input-wrapper">
+
+                <span class="input-icon">🎃</span>
+
+                <input
+                    type="text"
+                    id="bibInput"
+                    class="input-field"
+                    placeholder="e.g. SR13-XXXX"
+                    autocomplete="off"
+                >
+
+            </div>
+
+            <div id="bibError" class="error-msg"></div>
+
+        </div>
+
+
+        <!-- UNLOCK -->
+        <button class="btn btn-primary" id="unlockBtn">
+            Sign Up
+        </button>
+
+
+        <!-- RACE IMAGE -->
+        <div id="imageSection" class="image-section">
+
+            <div class="image-header">
+
+                <h3 class="image-title">BIB Image</h3>
+
+                <span class="badge" id="bibBadge">BIB #—</span>
+
+            </div>
+
+            <div class="image-preview">
+
+                <img id="dynamicImage" src="" alt="Race image">
+
+            </div>
+
+            <a id="downloadLink" class="download-btn" download>
+                <span class="icon">⬇️</span>
+                Download BIB Number
+            </a>
+
+        </div>
+
+
+        <!-- LOCKED ACTIONS -->
+        <div class="locked-actions" id="lockedActions">
+
+            <!-- LOCK OVERLAY -->
+            <div class="lock-overlay" id="lockOverlay">
+
+                <div class="lock-icon">🔒</div>
+
+                <p class="lock-text">
+                    Enter a valid
+                    <span class="highlight">BIB Number</span>
+                    above to unlock your run submission and community access.
+                </p>
+
+            </div>
+
+
+            <!-- SUBMISSION -->
+            <div class="submission-box">
+
+                <label class="field-label">🏁 Run Submission</label>
+
+                <a
+                    id="submissionLinkBtn"
+                    class="submission-link-btn"
+                    href="https://forms.gle/d6RdPrMT85VTeEKHA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span>
+                        <i class="link-icon">🔗</i>
+                        Submit Your Run 
+                    </span>
+
+                    <i class="arrow-icon">↗</i>
+                </a>
+
+            </div>
+
+
+            <!-- FACEBOOK -->
+            <div class="fb-community-box">
+
+                <label class="field-label">💬 Join Our Community</label>
+
+                <a
+                    id="fbCommunityBtn"
+                    class="fb-btn"
+                    href="https://www.facebook.com/share/g/19TkYk8Mph/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span>
+                        <i class="fb-icon">f</i>
+                        Join FB Community & Share Your Run Data
+                    </span>
+
+                    <i class="arrow-icon">↗</i>
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+        <p class="footer-note">
+            🎃 RavenX Bangladesh
+        </p>
+
+    </div>
+
+
+    <script>
+
+        (function () {
+
+            /* =====================================================
+               VALID BIB CODES
+               Images live in the same folder as this HTML file.
+               Filename pattern: {BIB}.png
+               Example: SR13-X385  →  SR13-X385.png
+               ===================================================== */
+
+            const VALID_BIBS = [
+                "SR31-A701", "SR31-A824", "SR31-B193", "SR31-B467",
+                "SR31-C215", "SR31-C638", "SR31-D904", "SR31-E352",
+                "SR31-E781", "SR31-F426", "SR31-G157", "SR31-G693",
+                "SR31-H284", "SR31-H819", "SR31-J341", "SR31-J726",
+                "SR31-K508", "SR31-L174", "SR31-L635", "SR31-M297",
+                "SR31-N846", "SR31-P413", "SR31-R752", "SR31-S326",
+                "SR31-X918",
+
+                "SR66-A184", "SR66-A527", "SR66-B316", "SR66-B749",
+                "SR66-C205", "SR66-C681", "SR66-D438", "SR66-D892",
+                "SR66-E157", "SR66-E624", "SR66-F309", "SR66-F775",
+                "SR66-G241", "SR66-G853", "SR66-H496", "SR66-H718",
+                "SR66-J163", "SR66-J582", "SR66-K347", "SR66-K906",
+                "SR66-L254", "SR66-L631", "SR66-M418", "SR66-M827",
+                "SR66-N305", "SR66-P694", "SR66-R271", "SR66-S846",
+                "SR66-X523",
+
+                "SR13-A147", "SR13-A582", "SR13-B316", "SR13-B749",
+                "SR13-C205", "SR13-C638", "SR13-D421", "SR13-D893",
+                "SR13-E157", "SR13-E724", "SR13-F309", "SR13-F681",
+                "SR13-G245", "SR13-G817", "SR13-H463", "SR13-H906",
+                "SR13-J128", "SR13-J574", "SR13-K347", "SR13-K825",
+                "SR13-L216", "SR13-L693", "SR13-M458", "SR13-M871",
+                "SR13-N304", "SR13-N752", "SR13-P169", "SR13-P684",
+                "SR13-R325", "SR13-R917", "SR13-S241", "SR13-S806",
+                "SR13-T437", "SR13-T695", "SR13-U158", "SR13-U824",
+                "SR13-V306", "SR13-V761", "SR13-W492", "SR13-W853",
+                "SR13-X217", "SR13-X674", "SR13-Y341", "SR13-Y908",
+                "SR13-Z526", "SR13-Z783", "SR13-C914", "SR13-D267",
+                "SR13-F538", "SR13-G972", "SR13-H315", "SR13-J841",
+                "SR13-K609", "SR13-L936", "SR13-M274", "SR13-N518",
+                "SR13-P907", "SR13-R463", "SR13-S729", "SR13-X385","SR13-G912"
+            ];
+
+            const BIB_SET = new Set(VALID_BIBS);
+
+
+            /* =====================================================
+               IMAGE PATH
+               ===================================================== */
+
+            function imageForBib(bib) {
+                return `${bib}.png`;
+            }
+
+
+            /* =====================================================
+               DOM ELEMENTS
+               ===================================================== */
+
+            const nameInput          = document.getElementById("nameInput");
+            const bibInput           = document.getElementById("bibInput");
+            const unlockBtn          = document.getElementById("unlockBtn");
+            const imageSection       = document.getElementById("imageSection");
+            const dynamicImage       = document.getElementById("dynamicImage");
+            const bibBadge           = document.getElementById("bibBadge");
+            const bibError           = document.getElementById("bibError");
+            const submissionLinkBtn  = document.getElementById("submissionLinkBtn");
+            const fbCommunityBtn     = document.getElementById("fbCommunityBtn");
+            const lockedActions      = document.getElementById("lockedActions");
+            const lockOverlay        = document.getElementById("lockOverlay");
+
+
+            /* =====================================================
+               CONSTANTS
+               ===================================================== */
+
+            const SUBMISSION_BASE = "https://forms.gle/d6RdPrMT85VTeEKHA";
+            const FB_GROUP_BASE   = "https://www.facebook.com/share/g/19TkYk8Mph/";
+
+            let currentBib = "";
+
+
+            /* =====================================================
+               SECTION HELPERS
+               ===================================================== */
+
+            function hideImageSection() {
+                imageSection.classList.remove("is-active");
+                dynamicImage.src = "";
+                bibBadge.textContent = "BIB #—";
+            }
+
+            function setError(message) {
+                bibError.textContent = message || "";
+            }
+
+            function clearError() {
+                bibError.textContent = "";
+            }
+
+
+            /* =====================================================
+               LOCK / UNLOCK
+               ===================================================== */
+
+            function lockActions() {
+                lockedActions.classList.add("is-locked");
+                lockOverlay.classList.remove("is-hidden");
+
+                submissionLinkBtn.href = SUBMISSION_BASE;
+                fbCommunityBtn.href    = FB_GROUP_BASE;
+
+                currentBib = "";
+            }
+
+            function unlockActions() {
+                lockedActions.classList.remove("is-locked");
+                lockOverlay.classList.add("is-hidden");
+            }
+
+            function resetAllState() {
+                hideImageSection();
+                clearError();
+                lockActions();
+                currentBib = "";
+            }
+
+
+            /* =====================================================
+               LINK UPDATERS
+               ===================================================== */
+
+            function updateSubmissionLink() {
+                submissionLinkBtn.href = bibValue
+                   
+            }
+
+            function updateFbLink() {
+                fbCommunityBtn.href = FB_GROUP_BASE;
+            }
+
+
+            /* =====================================================
+               FORCE DOWNLOAD
+               Fetches the file as a blob so the browser saves it
+               instead of opening it. Works for local files and
+               remote URLs (with CORS).
+               ===================================================== */
+
+            async function forceDownload(fileUrl, filename) {
+
+                try {
+                    const response = await fetch(fileUrl);
+
+                    if (!response.ok) {
+                        throw new Error("Fetch failed");
+                    }
+
+                    const blob    = await response.blob();
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const tempLink = document.createElement("a");
+                    tempLink.href = blobUrl;
+                    tempLink.download = filename;
+
+                    document.body.appendChild(tempLink);
+                    tempLink.click();
+                    document.body.removeChild(tempLink);
+
+                    setTimeout(function () {
+                        URL.revokeObjectURL(blobUrl);
+                    }, 4000);
+
+                } catch (err) {
+
+                    /* Fallback: direct anchor download */
+                    const tempLink = document.createElement("a");
+                    tempLink.href = fileUrl;
+                    tempLink.download = filename;
+
+                    document.body.appendChild(tempLink);
+                    tempLink.click();
+                    document.body.removeChild(tempLink);
+                }
+            }
+
+
+            /* =====================================================
+               UNLOCK BIB
+               ===================================================== */
+
+            function unlockImage() {
+
+                hideImageSection();
+                clearError();
+                lockActions();
+
+                const bibValue = bibInput.value.trim().toUpperCase();
+
+                if (!bibValue) {
+                    setError("Please enter your BIB number.");
+                    bibInput.focus();
+                    return;
+                }
+
+                if (!BIB_SET.has(bibValue)) {
+                    setError("❌ Invalid BIB number.");
+                    return;
+                }
+
+                currentBib = bibValue;
+
+                const imgSrc       = imageForBib(bibValue);
+                const raceFilename = `${bibValue}.png`;
+
+                /* Show race image */
+                dynamicImage.src = imgSrc;
+                dynamicImage.alt = `Race image for BIB ${bibValue}`;
+                bibBadge.textContent = `BIB #${bibValue}`;
+
+                /* Wire download button (fresh clone avoids stacked listeners) */
+                const oldLink = document.getElementById("downloadLink");
+                const newLink = oldLink.cloneNode(true);
+
+                newLink.href = "#";
+                newLink.setAttribute("download", raceFilename);
+
+                oldLink.parentNode.replaceChild(newLink, oldLink);
+
+                newLink.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    forceDownload(imgSrc, raceFilename);
+                });
+
+                /* Show section + unlock */
+                imageSection.classList.add("is-active");
+                unlockActions();
+
+                updateSubmissionLink(bibValue);
+                updateFbLink();
+            }
+
+
+            /* =====================================================
+               EVENT LISTENERS
+               ===================================================== */
+
+            unlockBtn.addEventListener("click", unlockImage);
+
+            bibInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    unlockImage();
+                }
+            });
+
+            nameInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    bibInput.focus();
+                }
+            });
+
+            bibInput.addEventListener("input", function () {
+                clearError();
+
+                if (imageSection.classList.contains("is-active")) {
+                    resetAllState();
+                }
+            });
+
+
+            /* =====================================================
+               INITIAL STATE
+               ===================================================== */
+
+            lockActions();
+            updateSubmissionLink("");
+            updateFbLink();
+
+            bibInput.setAttribute(
+                "title",
+                "Enter your assigned BIB number"
+            );
+
+        })();
+
+    </script>
+
+</body>
+</html>
